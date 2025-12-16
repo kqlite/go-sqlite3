@@ -9,6 +9,7 @@ package sqlite3
 
 /*
 #cgo CFLAGS: -DSQLITE_ENABLE_DBPAGE_VTAB=1
+#cgo LDFLAGS: -lm
 */
 import "C"
 
