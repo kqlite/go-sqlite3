@@ -112,7 +112,7 @@ extern "C"
   /* Function declarations */
 
   /* Core sync functions */
-  void originSide(SQLiteRsync *p);
+  void originSide(SQLiteRsync *p, int oflags);
   void replicaSide(SQLiteRsync *p);
 
   /* Hash functions */
