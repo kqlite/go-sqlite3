@@ -29,7 +29,7 @@ import (
 	"unsafe"
 )
 
-func RsyncOrigin(dbPath string, pIn, pOut *os.File) error {
+func RsyncOrigin(dbPath string, isUri bool, pIn, pOut *os.File) error {
     cOriginPath := C.CString(dbPath)
 	defer C.free(unsafe.Pointer(cOriginPath))
 
@@ -41,7 +41,12 @@ func RsyncOrigin(dbPath string, pIn, pOut *os.File) error {
         pOut:       C.fdopen((C.int)(pOut.Fd()), C.CString("wb")),
 	}
 
-    C.originSide(&ctx)
+    flags := (C.int)(0)
+    if isUri {
+        flags = C.SQLITE_OPEN_URI
+    }
+    // start replicating
+    C.originSide(&ctx, flags)
 
     if ctx.nErr > 0 {
         return errors.New("RSyncOrigin faild")
@@ -62,7 +67,8 @@ func RsyncReplica(replicaPath string, pIn, pOut *os.File) error {
         pOut:       C.fdopen((C.int)(pOut.Fd()), C.CString("wb")),
 	}
 
-    C.replicaSide(&ctx)
+    // do the replica
+    C.replicaSide(&ctx, flags)
     
     if ctx.nErr > 0 {
         return errors.New("RSyncReplica faild")

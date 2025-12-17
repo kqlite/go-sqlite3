@@ -1526,7 +1526,7 @@ static void closeDb(SQLiteRsync *p)
 **         ORIGIN_DETAIL messages with requests for more detail.
 */
 
-void originSide(SQLiteRsync *p)
+void originSide(SQLiteRsync *p, int oflags)
 
 {
   int rc = 0;
@@ -1553,7 +1553,7 @@ void originSide(SQLiteRsync *p)
   else
   {
     /* Open the ORIGIN database. */
-    rc = sqlite3_open_v2(p->zOrigin, &p->db, SQLITE_OPEN_READWRITE, 0);
+    rc = sqlite3_open_v2(p->zOrigin, &p->db, SQLITE_OPEN_READWRITE | oflags, 0);
     if (rc)
     {
       reportError(p, "cannot open origin \"%s\": %s",
