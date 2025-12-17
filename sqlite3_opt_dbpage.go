@@ -68,7 +68,7 @@ func RsyncReplica(replicaPath string, pIn, pOut *os.File) error {
 	}
 
     // do the replica
-    C.replicaSide(&ctx, flags)
+    C.replicaSide(&ctx)
     
     if ctx.nErr > 0 {
         return errors.New("RSyncReplica faild")
